@@ -24,7 +24,10 @@ function appendOperator(operator) {
     } else if (operator === 'xor') { // Adding XOR functionality
         display.value = display.value + '^'; // Append '^' instead of 'xor' to the expression
     } else if (operator === '**') { // Adding exponentiation functionality
-        display.value = display.value + '^'; // Append '^' for exponentiation
+        display.value = display.value + '**'; // Append '**' for exponentiation
+    } else {
+        // Handle other operators
+        display.value = display.value + operator;
     }
     console.log("Expression after appending operator:", display.value); // Debugging line
 }
@@ -42,6 +45,8 @@ function calculate() {
     const display = document.getElementById('display');
     try {
         let expression = display.value;
+        // Parse exponentiation before evaluation
+        expression = parseExponentiation(expression);
         const result = eval(expression);
         display.value = `${expression}=${result}`; // Display expression along with the result
     } catch (error) {
@@ -108,4 +113,16 @@ function handleKeyPress(event) {
 function backspace() {
     const display = document.getElementById('display');
     display.value = display.value.slice(0, -1); // Remove the last character from the display
+}
+function calculate() {
+    const display = document.getElementById('display');
+    try {
+        let expression = display.value;
+        // Replace ^ with ** for exponentiation
+        expression = expression.replace(/\^/g, '**');
+        const result = eval(expression);
+        display.value = `${expression}=${result}`; // Display expression along with the result
+    } catch (error) {
+        display.value = 'Error';
+    }
 }
