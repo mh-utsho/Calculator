@@ -126,3 +126,26 @@ function calculate() {
         display.value = 'Error';
     }
 }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const display = document.getElementById('display');
+
+    // Copy event listener
+    display.addEventListener('copy', function(event) {
+        event.preventDefault(); // Prevent the default copy behavior
+        if (display.value !== '') {
+            event.clipboardData.setData('text/plain', display.value); // Copy the display value to the clipboard
+        }
+    });
+
+    // Paste event listener
+    display.addEventListener('paste', function(event) {
+        event.preventDefault(); // Prevent the default paste behavior
+        const pastedText = (event.clipboardData || window.clipboardData).getData('text');
+        if (!isNaN(parseFloat(pastedText))) { // Check if the pasted text is a number
+            // Append the pasted number to the display
+            display.value += pastedText;
+        }
+    });
+});
