@@ -220,5 +220,12 @@ function copyText() {
         }, 100);
     }
 }
+function appendDecimal() {
+    const display = document.getElementById('display');
+    // Check if the display already contains a decimal point
+    if (!display.value.includes('.')) {
+        display.value += '.';
+    }
+}
 
 
