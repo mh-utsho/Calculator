@@ -16,13 +16,13 @@ function usePreviousAnswer() {
 function appendOperator(operator) {
     const display = document.getElementById('display');
     const lastChar = display.value[display.value.length - 1];
-    if (
-        (operator === '^' && !isNaN(parseInt(lastChar))) || // Check if the last character is a number for '^'
+    if (operator === ' xor ') {
+        display.value = display.value + '^';
+    } else if (
+        (operator === ' xor ' && !isNaN(parseInt(lastChar))) || // Check if the last character is a number for 'xor'
         (lastChar !== '+' && lastChar !== '-' && lastChar !== '*' && lastChar !== '/' && lastChar !== '%' && lastChar !== '(')
     ) {
         display.value = display.value + operator;
-    } else if (operator === 'xor') { // Adding XOR functionality
-        display.value = display.value + '^'; // Append '^' instead of 'xor' to the expression
     } else if (operator === '**') { // Adding exponentiation functionality
         display.value = display.value + '**'; // Append '**' for exponentiation
     } else {
@@ -45,21 +45,13 @@ function calculate() {
     const display = document.getElementById('display');
     try {
         let expression = display.value;
-        // Parse exponentiation before evaluation
-        expression = parseExponentiation(expression);
+        // Replace xor with bitwise XOR operator
+        expression = expression.replace(/ xor /g, ' ^ ');
         const result = eval(expression);
         display.value = `${expression}=${result}`; // Display expression along with the result
     } catch (error) {
         display.value = 'Error';
     }
-}
-
-function parseExponentiation(expression) {
-    // Regular expression to match exponentiation: base^exponent
-    const regex = /(\d+(?:\.\d+)?)\^(\d+(?:\.\d+)?)/g;
-
-    // Replace all matches of exponentiation with the result of exponentiation
-    return expression.replace(regex, (match, base, exponent) => Math.pow(parseFloat(base), parseFloat(exponent)));
 }
 
 function binaryToDecimal() {
@@ -114,18 +106,6 @@ function backspace() {
     const display = document.getElementById('display');
     display.value = display.value.slice(0, -1); // Remove the last character from the display
 }
-function calculate() {
-    const display = document.getElementById('display');
-    try {
-        let expression = display.value;
-        // Replace ^ with ** for exponentiation
-        expression = expression.replace(/\^/g, '**');
-        const result = eval(expression);
-        display.value = `${expression}=${result}`; // Display expression along with the result
-    } catch (error) {
-        display.value = 'Error';
-    }
-}
 
 document.addEventListener('DOMContentLoaded', function() {
     const display = document.getElementById('display');
@@ -148,3 +128,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Function to handle paste button click
+// function pasteText() {
+//     navigator.clipboard.readText()
+//         .then(text => {
+//             if (!isNaN(parseFloat(text))) { // Check if the pasted text is a number
+
+
+// Function to handle paste button click
+function pasteText() {
+    navigator.clipboard.readText()
+        .then(text => {
+            if (!isNaN(parseFloat(text))) { // Check if the pasted text is a number
+                const display = document.getElementById('display');
+                display.value += text; // Append the pasted number to the display
+            } else {
+                console.error('Pasted text is not a valid number');
+            }
+        })
+        .catch(err => {
+            console.error('Failed to read clipboard contents: ', err);
+        });
+}
