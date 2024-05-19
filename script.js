@@ -129,7 +129,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Function to handle paste button click
 
 function pasteText() {
     const display = document.getElementById('display');
@@ -173,9 +172,43 @@ function pasteText() {
     }
 }
 
+// function copyText() {
+//     const display = document.getElementById('display');
+    
+//     // Use modern Clipboard API for copying text
+//     if (navigator.clipboard) {
+//         navigator.clipboard.writeText(display.value)
+//             .then(() => console.log('Text copied to clipboard'))
+//             .catch(err => console.error('Failed to copy text: ', err));
+//     } else {
+//         // Fallback for browsers that do not support the Clipboard API
+//         const tempInput = document.createElement('input');
+//         tempInput.setAttribute('type', 'text');
+//         tempInput.setAttribute('value', display.value);
+//         document.body.appendChild(tempInput);
+//         tempInput.select();
+//         document.execCommand('copy');
+//         document.body.removeChild(tempInput);
+//     }
+// }
 
-    // Clean up: Remove the temporary input element if focus is lost
-    tempInput.addEventListener('blur', function() {
+function copyText() {
+    const display = document.getElementById('display');
+    const result = display.value.split('=')[1]; // Get the part after '=' which represents the result
+
+    // Use modern Clipboard API for copying text
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(result)
+            .then(() => console.log('Text copied to clipboard'))
+            .catch(err => console.error('Failed to copy text: ', err));
+    } else {
+        // Fallback for browsers that do not support the Clipboard API
+        const tempInput = document.createElement('input');
+        tempInput.setAttribute('type', 'text');
+        tempInput.setAttribute('value', result);
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
         document.body.removeChild(tempInput);
-    });
+    }
 }
