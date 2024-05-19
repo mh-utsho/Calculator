@@ -201,7 +201,9 @@ function copyText() {
         navigator.clipboard.writeText(result)
             .then(() => {
                 console.log('Text gracefully copied to clipboard');
-                display.value = ''; // Clear the display after copying
+                setTimeout(() => {
+                    display.value = ''; // Clear the display after a brief delay
+                }, 100);
             })
             .catch(err => console.error('Failed to copy text: ', err));
     } else {
@@ -213,6 +215,10 @@ function copyText() {
         tempInput.select();
         document.execCommand('copy');
         document.body.removeChild(tempInput);
-        display.value = ''; // Clear the display after copying
+        setTimeout(() => {
+            display.value = ''; // Clear the display after a brief delay
+        }, 100);
     }
 }
+
+
