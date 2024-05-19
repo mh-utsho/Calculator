@@ -194,12 +194,15 @@ function pasteText() {
 
 function copyText() {
     const display = document.getElementById('display');
-    const result = display.value.split('=')[1]; // Get the part after '=' which represents the result
+    const result = display.value.split('=')[1]; // Extracts the part after '=' representing the result
 
-    // Use modern Clipboard API for copying text
+    // Utilize the modern Clipboard API for copying text
     if (navigator.clipboard) {
         navigator.clipboard.writeText(result)
-            .then(() => console.log('Text copied to clipboard'))
+            .then(() => {
+                console.log('Text gracefully copied to clipboard');
+                display.value = ''; // Clear the display after copying
+            })
             .catch(err => console.error('Failed to copy text: ', err));
     } else {
         // Fallback for browsers that do not support the Clipboard API
@@ -210,5 +213,6 @@ function copyText() {
         tempInput.select();
         document.execCommand('copy');
         document.body.removeChild(tempInput);
+        display.value = ''; // Clear the display after copying
     }
 }
