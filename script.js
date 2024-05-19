@@ -138,16 +138,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Function to handle paste button click
 function pasteText() {
-    navigator.clipboard.readText()
-        .then(text => {
-            if (!isNaN(parseFloat(text))) { // Check if the pasted text is a number
-                const display = document.getElementById('display');
-                display.value += text; // Append the pasted number to the display
-            } else {
-                console.error('Pasted text is not a valid number');
-            }
-        })
-        .catch(err => {
-            console.error('Failed to read clipboard contents: ', err);
-        });
+    const display = document.getElementById('display');
+
+    // Create a temporary input element
+    const tempInput = document.createElement('input');
+    tempInput.style.position = 'absolute';
+    tempInput.style.left = '-1000px';
+    tempInput.style.opacity = '0';
+
+    // Append the temporary input element to the body
+    document.body.appendChild(tempInput);
+
+    // Focus on the temporary input element
+    tempInput.focus();
+
+    // Add an event listener to handle the paste event
+    tempInput.addEventListener('paste', function(event) {
+        event.preventDefault(); // Prevent the default paste behavior
+        const pastedText = (event.clipboardData || window.clipboardData).getData('text');
+        if (!isNaN(parseFloat(pastedText))) { // Check if the pasted text is a number
+            // Append the pasted number to the display
+            display.value += pastedText;
+        }
+        // Remove the temporary input element
+        document.body.removeChild(tempInput);
+    });
+
+    // Clean up: Remove the temporary input element if focus is lost
+    tempInput.addEventListener('blur', function() {
+        document.body.removeChild(tempInput);
+    });
 }
