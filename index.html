@@ -12,7 +12,7 @@
         <div class="buttons">
             <button onclick="appendOperator('(')">(</button>
             <button onclick="appendOperator(')')">)</button>
-            <button onclick="appendOperator('^')">xor</button>
+            <button onclick="appendOperator(' ^ ')">xor</button> <!-- Button for XOR -->
             <button onclick="appendOperator('+')">+</button>
             <button onclick="appendNumber(7)">7</button>
             <button onclick="appendNumber(8)">8</button>
@@ -28,12 +28,13 @@
             <button onclick="appendOperator('/')">/</button>
             <button onclick="appendNumber(0)">0</button>
             <button onclick="calculate()">=</button>
-            <button onclick="clearDisplay()">Del</button> <!-- Button for clearing the display -->
+            <button onclick="clearDisplay()">Del</button>
             <button onclick="appendOperator('%')">%</button>
             <button onclick="binaryToDecimal()">B→D</button>
             <button onclick="decimalToBinary()">D→B</button>
-            <button onclick="backspace()">←</button> <!-- Button for backspace -->
-            <button onclick="appendOperator('^')">pow</button> <!-- Use '**' for exponentiation -->
+            <button onclick="backspace()">←</button>
+            <button onclick="appendOperator('**')">pow</button>
+            <button onclick="pasteText()">Paste</button>
         </div>
     </div>
     <script src="script.js"></script>
